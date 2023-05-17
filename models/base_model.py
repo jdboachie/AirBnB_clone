@@ -22,7 +22,9 @@ class BaseModel:
         Returns:
             str: A string representing the BaseModel instance.
         """
-        return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
+        return "[{}] ({}) {}".format(self.__class__.__name__,
+                                     self.id,
+                                     self.__dict__)
 
     def save(self):
         """
@@ -35,7 +37,8 @@ class BaseModel:
         Converts the BaseModel instance to a dictionary.
 
         Returns:
-            dict: A dictionary containing all the attributes of the BaseModel instance.
+            dict: A dictionary containing all the attributes
+                  of the BaseModel instance.
         """
         obj_dict = self.__dict__.copy()
         obj_dict['__class__'] = self.__class__.__name__
