@@ -2,6 +2,7 @@
 """Module that defines the BaseModel class."""
 import uuid
 from datetime import datetime
+from models.engine import storage
 
 
 class BaseModel:
@@ -28,6 +29,8 @@ class BaseModel:
                     if key == 'created_at' or key == 'updated_at':
                         value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
                     setattr(self, key, value)
+        
+        storage.new(self)
 
     def __str__(self):
         """
@@ -43,6 +46,7 @@ class BaseModel:
         Updates the updated_at attribute with the current datetime.
         """
         self.updated_at = datetime.now()
+        storage.save()
 
     def to_dict(self):
         """
