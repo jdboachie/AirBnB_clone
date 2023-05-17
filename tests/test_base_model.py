@@ -1,23 +1,42 @@
-#!/usr/bin/python3
-"""Test BaseModel class"""
+import datetime
+import unittest
+from uuid import uuid4
+
 from models.base_model import BaseModel
 
-my_model = BaseModel()
-my_model.name = "My First Model"
-my_model.my_number = 89
 
-print(my_model)
+class TestBaseModel(unittest.TestCase):
 
-my_model.save()
+    def test_init(self):
+        """Test the __init__ method"""
+        model = BaseModel()
+        # self.assertAlmostEquals(model.id, uuid4())
+        self.assertIsInstance(datetime.datetime.strptime(model.created_at,
+                                                         "%Y-%m-%dT%H:%M:%S.%f"),
+                              datetime.datetime)
+        self.assertIsInstance(datetime.datetime.strptime(model.updated_at,
+                                                         "%Y-%m-%dT%H:%M:%S.%f"),
+                              datetime.datetime)
 
-print(my_model)
+    def test_str(self):
+        """Test the __str__ method"""
+        model = BaseModel()
+        expected_str = f"[{model.__class__.__name__}] ({model.id}) <{model.__dict__}>"
+        self.assertEqual(str(model), expected_str)
 
-my_model_json = my_model.to_dict()
+    def test_save(self):
+        """Test the save method"""
+        model = BaseModel()
+        model.save()
+        self.assertGreaterEqual(model.updated_at, model.created_at)
 
-print(my_model_json)
+    def test_to_dict(self):
+        """Test the to_dict method"""
+        model = BaseModel()
+        expected_dict = model.__dict__.copy()
+        expected_dict["__class__"] = model.__class__.__name__
+        self.assertEqual(model.to_dict(), expected_dict)
 
-print("JSON of my_model:")
-for key in my_model_json.keys():
-    print("\t{}: ({}) - {}".format(key,
-                                   type(my_model_json[key]),
-                                   my_model_json[key]))
+
+if __name__ == "__main__":
+    unittest.main()
