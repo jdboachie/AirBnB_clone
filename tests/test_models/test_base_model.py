@@ -3,8 +3,8 @@
 Defines a class TestBaseModel.
 """
 
-from time import sleep
 import unittest
+from time import sleep
 from datetime import datetime
 from models.base_model import BaseModel
 
