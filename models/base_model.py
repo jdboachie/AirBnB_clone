@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""BaseModel class for AirBnB"""
 
 from models import storage
 from datetime import datetime
@@ -6,8 +7,11 @@ from uuid import uuid4
 
 
 class BaseModel:
+    """BaseModel class for AirBnB"""
 
     def __init__(self, *args, **kwargs) -> None:
+        """Initialize BaseModel
+        """
         if not kwargs:
             self.id = str(uuid4())
             self.created_at = datetime.now()
@@ -21,6 +25,11 @@ class BaseModel:
                 setattr(attrib, value)
 
     def __str__(self) -> str:
+        """__str__ method for BaseModel
+
+        Returns:
+            str: [BaseModel] (<self.id>) <self.__dict__>
+        """
         return "[{}] ({}) {}".format(
             __class__.__name__,
             self.id,
@@ -28,10 +37,17 @@ class BaseModel:
         )
 
     def save(self) -> None:
+        """save method for BaseModel
+        """
         self.updated_at = datetime.now()
         storage.save(self)
 
     def to_dict(self) -> dict:
+        """to_dict method for BaseModel
+
+        Returns:
+            dict: dictionary of BaseModel
+        """
         obj_dict = self.__dict__.copy()
         obj_dict["__class__"] = self.__class__.__name__
         obj_dict["created_at"] = self.created_at.strftime(
