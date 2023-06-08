@@ -19,10 +19,10 @@ class BaseModel:
             storage.new(self)
         else:
             kwargs.pop("__class__", None)
-            for attrib, value in kwargs:
+            for attrib, value in kwargs.items():
                 if attrib in ["created_at", "updated_at"]:
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
-                setattr(attrib, value)
+                setattr(self, attrib, value)
 
     def __str__(self) -> str:
         """__str__ method for BaseModel
@@ -31,7 +31,7 @@ class BaseModel:
             str: [BaseModel] (<self.id>) <self.__dict__>
         """
         return "[{}] ({}) {}".format(
-            __class__.__name__,
+            self.__class__.__name__,
             self.id,
             self.__dict__
         )
@@ -40,7 +40,7 @@ class BaseModel:
         """save method for BaseModel
         """
         self.updated_at = datetime.now()
-        storage.save(self)
+        storage.save()
 
     def to_dict(self) -> dict:
         """to_dict method for BaseModel
